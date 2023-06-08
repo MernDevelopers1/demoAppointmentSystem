@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BiSearch, BiCaretDown,BiCheck } from 'react-icons/bi';
+import PropTypes from 'prop-types';
 const DropDown = () => {
     return (
             <div className="origin-top-right absolute right-0 mt-2 w-56
@@ -24,7 +25,8 @@ const DropDown = () => {
     </div>
     )
 }
-const Search = () => {
+
+const Search = ({Query,OnQueryChange}) => {
     const [tooglesort, settooglesort] = useState(false);
     return (
         <div className="py-5">
@@ -33,7 +35,10 @@ const Search = () => {
                     <BiSearch />
                     <label htmlFor="query" className="sr-only" />
                 </div>
-                <input type="text" name="query" id="query" value=""
+                <input type="text" name="query" id="query" value={Query}
+                onChange={(e)=>{
+                  console.log(e.target.value);
+                  OnQueryChange(e.target.value)}}
                     className="pl-8 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300" placeholder="Search" />
                 <div className="absolute inset-y-0 right-0 flex items-center">
                     <div>
@@ -48,5 +53,9 @@ const Search = () => {
             </div>
         </div>
     )
+};
+Search.propTypes = {
+  Query: PropTypes.string.isRequired,
+  OnQueryChange: PropTypes.func.isRequired
 };
 export default Search;
