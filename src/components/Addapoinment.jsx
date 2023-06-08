@@ -1,7 +1,32 @@
 import { useState } from "react";
 import { BiCalendarPlus } from "react-icons/bi";
-const AddApoinment = () => {
+import PropTypes from "prop-types";
+const AddApoinment = ({lastId,sendinfo}) => {
+    const cleardata = {
+        ownerName: "",
+        petName: "",
+        aptDate: "",
+        aptTime: "",
+        aptNotes:""
+    }
     const [appointmentflag, setapointmentflag] = useState(false);
+    const [formdata, setformdata] = useState(cleardata);
+    const handleChange = (e) => {
+        setformdata(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    }
+    const publishcontent = () => {
+        console.log("called");
+        const aptinfo = {
+            id: lastId + 1,
+            petName: formdata.petName,
+            ownerName: formdata.ownerName,
+            aptDate: formdata.aptDate + " " + formdata.aptTime,
+            aptNotes: formdata.aptNotes
+        };
+        sendinfo(aptinfo);
+        setformdata(cleardata);
+        setapointmentflag(prev => !prev);
+    }
     return (
         <div>
             <button onClick={() => setapointmentflag(prev => !prev)}
@@ -15,7 +40,7 @@ const AddApoinment = () => {
                         Owner Name
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="ownerName" id="ownerName"
+                        <input type="text" name="ownerName" id="ownerName" value={formdata.ownerName} onChange={(e)=>handleChange(e)}
                             className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md" />
                     </div>
                 </div>
@@ -24,7 +49,7 @@ const AddApoinment = () => {
                         Pet Name
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="text" name="petName" id="petName"
+                        <input type="text" name="petName" id="petName" onChange={(e)=>handleChange(e)} value={formdata.petName}
                             className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md" />
                     </div>
                 </div>
@@ -33,7 +58,7 @@ const AddApoinment = () => {
                         Apt Date
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="date" name="aptDate" id="aptDate"
+                        <input type="date" name="aptDate" id="aptDate" onChange={(e)=>handleChange(e)} value={formdata.aptDate}
                             className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md" />
                     </div>
                 </div>
@@ -42,7 +67,7 @@ const AddApoinment = () => {
                         Apt Time
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
-                        <input type="time" name="aptTime" id="aptTime"
+                        <input type="time" name="aptTime" id="aptTime" onChange={(e)=>handleChange(e)} value={formdata.aptTime}
                             className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md" />
                     </div>
                 </div>
@@ -51,13 +76,13 @@ const AddApoinment = () => {
                         Appointment Notes
                     </label>
                     <div className="mt-1 sm:mt-0 sm:col-span-2">
-                        <textarea id="aptNotes" name="aptNotes" rows="3"
+                        <textarea id="aptNotes" name="aptNotes" rows="3" onChange={(e)=>handleChange(e)} value={formdata.aptNotes}
                             className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Detailed comments about the condition"></textarea>
                     </div>
                 </div>
                 <div className="pt-5">
                     <div className="flex justify-end">
-                        <button type="submit" className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                        <button type="submit" onClick={publishcontent} className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-400 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
                             Submit
                         </button>
                     </div>
@@ -66,5 +91,9 @@ const AddApoinment = () => {
            }
         </div>
     );
+};
+AddApoinment.propTypes = {
+  lastId: PropTypes.number.isRequired,
+  sendinfo: PropTypes.func.isRequired
 };
 export default AddApoinment;

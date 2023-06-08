@@ -39,10 +39,8 @@ function App() {
       <div className="App container mx-auto mt-3 font-thin">
         <h1 className="text-5xl mb-3">
           <BiCalendar className="inline-block text-red-400 align-top" />Your Appointments</h1>
-        <AddApoinment />
-        <Search Query={query} OnQueryChange={(Querystring)=>{
-          console.log(Querystring);
-          setQuery(Querystring)}} />
+        <AddApoinment lastId={appointmentList.reduce((max, item) => Number(item.id) > max ? Number(item.id) : max, 0)} sendinfo={(aptdata) => setAppointmentList(prev => [...prev, aptdata])} />
+        <Search Query={query} OnQueryChange={(Querystring) => setQuery(Querystring)} SortBy={sortBy} onSortChange={(sortval) => setSortBy(sortval)} OrderBy={orderBy} onOrderChange={(orderval) => setOrderBy(orderval)} />
         <ul className='divide-y divide-gray-200'>
           {
             filteredData.map((appointment) => {
