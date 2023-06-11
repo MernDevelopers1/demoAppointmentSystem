@@ -40,9 +40,14 @@ function App() {
         <h1 className="text-5xl mb-3">
           <BiCalendar className="inline-block text-red-400 align-top" />Your Appointments</h1>
         <AddApoinment />
-        <Search Query={query} OnQueryChange={(Querystring)=>{
-          console.log(Querystring);
-          setQuery(Querystring)}} />
+        <Search 
+        Query={query} 
+        OnQueryChange={(Querystring)=> setQuery(Querystring)} 
+        sortBy = {sortBy}
+        onSortChange = {(Sortval)=> setSortBy(Sortval)}
+        orderBy={orderBy}
+        onOrderChange = {(orderval)=>setOrderBy(orderval)}
+        />
         <ul className='divide-y divide-gray-200'>
           {
             filteredData.map((appointment) => {
